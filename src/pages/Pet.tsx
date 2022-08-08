@@ -1,12 +1,14 @@
+import { useParams } from "react-router-dom";
 import usePet from "../hooks/usePet";
 
 
 
 
 const Pet=()=>{
-    const {data,loading,error} = usePet(1);
+    const {id} = useParams<{id:string}>()
+    const {data,loading,error} = usePet(+id!);
 
-    if(error || !data) return <div>Something went wrong</div>
+    if(error || !data?.pet) return <div>Something went wrong</div>
 
     if(loading) return <div>spinner</div>
 
