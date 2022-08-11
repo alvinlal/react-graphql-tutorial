@@ -16,7 +16,7 @@ const AddPet: React.FC = () => {
   const [type, setType] = useState<string>('');
   const [ownerId, setOwnerId] = useState<number>(1);
 
-  const [createProduct, { data, loading, error }] = useMutation<
+  const [createPet, { data, loading, error }] = useMutation<
     { createPet: Pet },
     { createPetInput: { name: string; type?: string; ownerId: number } }
   >(ADD_PET, {
@@ -29,6 +29,16 @@ const AddPet: React.FC = () => {
     },
   });
 
+  console.log(error?.graphQLErrors);
+  const handleSubmit = async () => {
+    try {
+      const res = await createPet();
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <input type='text' placeholder='name' onChange={e => setName(e.target.value)} />
@@ -36,7 +46,7 @@ const AddPet: React.FC = () => {
       <input type='text' placeholder='type' onChange={e => setType(e.target.value)} />
       <br></br>
       <input type='text' placeholder='owner id' onChange={e => setOwnerId(+e.target.value)} />
-      <button onClick={() => createProduct()}>Submit</button>
+      <button onClick={() => handleSubmit()}>Submit</button>
       {loading && <p>loading...</p>}
       {error && <p>something went wrong</p>}
       {data && (
